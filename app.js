@@ -13,9 +13,9 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const router = require('./routes');
 
-const { PORT = 3000 } = process.env.PORT;
-const { MONGOURL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env.MONGOURL;
-const { ORIGINS = 'http://localhost' } = process.env.ORIGINS;
+const { PORT = 3000 } = process.env;
+const { MONGOURL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+const { ORIGINS = 'http://localhost' } = process.env;
 
 const app = express();
 

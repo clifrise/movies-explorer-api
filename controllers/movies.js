@@ -59,7 +59,7 @@ const deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (movie.owner._id.toString() === req.user._id) {
         movie.remove();
-        res.send({ message: 'Пост удален' });
+        res.send({ message: 'Фильм удален' });
       } else {
         throw new ForbiddenError('Недостаточно прав для удаления фильма');
       }
