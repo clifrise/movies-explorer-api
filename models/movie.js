@@ -47,7 +47,6 @@ const movieSchema = new mongoose.Schema({
   },
   movieId: {
     type: String,
-    unique: true,
     require: true,
   },
   nameRU: {
@@ -63,5 +62,7 @@ const movieSchema = new mongoose.Schema({
     default: [],
   },
 });
+
+movieSchema.index({ owner: 1, movieId: 1 }, { unique: true });
 
 module.exports = mongoose.model('movie', movieSchema);

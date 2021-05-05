@@ -69,6 +69,8 @@ const updateUser = (req, res, next) => {
         next(new BadRequestError('Неверено задано одно из полей'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('Невалидный id'));
+      } else if (err.name === 'MongoError' && err.code === 11000) {
+        next(new ConflictError('Пользователь с указанной почтой уже существует в базе данных'));
       } else {
         next(err);
       }
