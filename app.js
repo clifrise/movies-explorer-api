@@ -1,23 +1,23 @@
 require('dotenv').config();
+
+const { NODE_ENV, MONGOURLPROD, MONGOURLDEV } = process.env;
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const limiter = require('./middlewares/rate-limiter');
-const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/error-handler');
-const { validateSignIn, validateSignUp } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
-const { MONGOURL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
 const { ORIGINS = 'http://localhost' } = process.env;
 
 const app = express();
+
+app.use(requestLogger);
 
 app.use(limiter);
 
@@ -25,14 +25,12 @@ app.use(
   cors({
     origin: ORIGINS,
     optionsSuccessStatus: 200,
-  })
+  }),
 );
 
 app.use(helmet());
 
-app.use(requestLogger);
-
-mongoose.connect(MONGOURL, {
+mongoose.connect(NODE_ENV === 'production' ? MONGOURLPROD : MONGOURLDEV, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -40,12 +38,6 @@ mongoose.connect(MONGOURL, {
 });
 
 app.use(express.json());
-
-app.post('/signin', validateSignIn, login);
-
-app.post('/signup', validateSignUp, createUser);
-
-app.use(auth);
 
 app.use(router);
 

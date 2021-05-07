@@ -83,7 +83,7 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'super-secret-jwt'
+        NODE_ENV === 'production' ? JWT_SECRET : 'super-secret-jwt',
       );
       res
         .status(200)

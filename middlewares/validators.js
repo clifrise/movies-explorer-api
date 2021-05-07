@@ -15,10 +15,12 @@ const validateSignIn = celebrate({
 
 const validateSignUp = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).messages({
-      'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
-      'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-    }),
+    name: Joi.string().required().min(2).max(30)
+      .messages({
+        'any.required': '{#label} обязательное поле!',
+        'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
+        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
+      }),
     email: Joi.string().required().messages({
       'any.required': '{#label} обязательное поле!',
     }),
@@ -36,27 +38,24 @@ const validateGetLoggedInUser = celebrate({
         'string.valid': 'Поле {#label} должно иметь значение application/json!',
         'string.required': '{#label} обязательное поле!',
       }),
-      authorization: Joi.string().max(200).required().messages({
-        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-        'string.required': '{#label} обязательное поле!',
-      }),
     })
     .unknown(),
 });
 
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required().messages({
-      'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
-      'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-      'string.required': '{#label} обязательное поле!',
-    }),
+    name: Joi.string().min(2).max(30).required()
+      .messages({
+        'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
+        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
+        'string.required': '{#label} обязательное поле!',
+      }),
     email: Joi.string()
       .custom((value, helpers) => {
         if (validator.isEmail(value)) {
           return value;
         }
-        return helpers.message('Поле "image" должно быть валидным url-адресом');
+        return helpers.message('Поле "email" должно быть валидным электронным адресом');
       })
       .messages({
         'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
@@ -70,10 +69,6 @@ const validateUpdateUser = celebrate({
         'string.valid': 'Поле {#label} должно иметь значение application/json!',
         'string.required': '{#label} обязательное поле!',
       }),
-      authorization: Joi.string().max(200).required().messages({
-        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-        'string.required': '{#label} обязательное поле!',
-      }),
     })
     .unknown(),
 });
@@ -83,10 +78,6 @@ const validateGetMovies = celebrate({
     .keys({
       'content-type': Joi.string().valid('application/json').required().messages({
         'string.valid': 'Поле {#label} должно иметь значение application/json!',
-        'string.required': '{#label} обязательное поле!',
-      }),
-      authorization: Joi.string().max(200).required().messages({
-        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
         'string.required': '{#label} обязательное поле!',
       }),
     })
@@ -107,11 +98,12 @@ const validateCreateMovie = celebrate({
       'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
       'string.required': '{#label} обязательное поле!',
     }),
-    year: Joi.string().required().min(2).max(4).messages({
-      'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
-      'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-      'string.required': '{#label} обязательное поле!',
-    }),
+    year: Joi.string().required().min(2).max(4)
+      .messages({
+        'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
+        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
+        'string.required': '{#label} обязательное поле!',
+      }),
     description: Joi.string().required().min(2).messages({
       'string.min': 'Поле {#label} должно быть не меньше {#limit} символов!',
       'string.required': '{#label} обязательное поле!',
@@ -165,10 +157,6 @@ const validateCreateMovie = celebrate({
         'string.valid': 'Поле {#label} должно иметь значение application/json!',
         'string.required': '{#label} обязательное поле!',
       }),
-      authorization: Joi.string().max(200).required().messages({
-        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
-        'string.required': '{#label} обязательное поле!',
-      }),
     })
     .unknown(),
 });
@@ -184,10 +172,6 @@ const validateDeleteMovie = celebrate({
     .keys({
       'content-type': Joi.string().valid('application/json').required().messages({
         'string.valid': 'Поле {#label} должно иметь значение application/json!',
-        'string.required': '{#label} обязательное поле!',
-      }),
-      authorization: Joi.string().max(200).required().messages({
-        'string.max': 'Поле {#label} должно быть не больше {#limit} символов!',
         'string.required': '{#label} обязательное поле!',
       }),
     })
